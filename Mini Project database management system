@@ -1,144 +1,489 @@
-#include <iostream>
-#include <unordered_map>
-#include <string>
-#include <vector>
-#include <ctime>
-#include <cstdlib>
+CREATE DATABASE EkOnkarPG;
+USE EkOnkarPG;
 
-using namespace std;
+CREATE TABLE PG_Owners (
+    owner_id INT PRIMARY KEY AUTO_INCREMENT,
+    owner_name VARCHAR(100) NOT NULL,
+    contact_number VARCHAR(15) NOT NULL,
+    email VARCHAR(100),
+    address TEXT,
+    aadhar_number VARCHAR(20) UNIQUE,
+    join_date DATE NOT NULL
+);
 
-// Chatbot class to encapsulate functionalities
-class Chatbot {
-private:
-    unordered_map<string, vector<string>> responses;
-    string userName;
+INSERT INTO PG_Owners (owner_name, contact_number, email, address, aadhar_number, join_date) VALUES
+('Rajesh Sharma', '9876543210', 'rajesh.sharma@example.com', '45, Green Park, Delhi', '123456789012', '2020-01-15'),
+('Priya Patel', '8765432109', 'priya.patel@example.com', '12, Shivaji Nagar, Mumbai', '234567890123', '2020-03-22'),
+('Amit Singh', '7654321098', 'amit.singh@example.com', '78, MG Road, Bangalore', '345678901234', '2020-05-10'),
+('Neha Gupta', '6543210987', 'neha.gupta@example.com', '33, Jubilee Hills, Hyderabad', '456789012345', '2020-07-18'),
+('Vikram Joshi', '9432109876', 'vikram.joshi@example.com', '9, Koregaon Park, Pune', '567890123456', '2020-09-05'),
+('Ananya Reddy', '8321098765', 'ananya.reddy@example.com', '21, Banjara Hills, Hyderabad', '678901234567', '2020-11-12'),
+('Rahul Malhotra', '7210987654', 'rahul.malhotra@example.com', '56, Salt Lake, Kolkata', '789012345678', '2021-01-20'),
+('Sneha Iyer', '6109876543', 'sneha.iyer@example.com', '34, Adyar, Chennai', '890123456789', '2021-03-08'),
+('Arjun Kapoor', '5098765432', 'arjun.kapoor@example.com', '67, Gomti Nagar, Lucknow', '901234567890', '2021-05-15'),
+('Divya Nair', '4987654321', 'divya.nair@example.com', '89, Bodakdev, Ahmedabad', '012345678901', '2021-07-22'),
+('Sanjay Verma', '9876501234', 'sanjay.verma@example.com', '23, Civil Lines, Jaipur', '123450987612', '2021-09-30'),
+('Pooja Mehta', '8765410123', 'pooja.mehta@example.com', '45, Race Course, Coimbatore', '234561098723', '2021-11-07'),
+('Vivek Choudhary', '7654321012', 'vivek.choudhary@example.com', '78, Ashok Nagar, Chandigarh', '345672109834', '2022-01-14'),
+('Kavita Srinivasan', '6543210123', 'kavita.srinivasan@example.com', '12, HSR Layout, Bangalore', '456783210945', '2022-03-21'),
+('Rohit Khanna', '5432101234', 'rohit.khanna@example.com', '34, Viman Nagar, Pune', '567894321056', '2022-05-28'),
+('Meera Banerjee', '4321012345', 'meera.banerjee@example.com', '56, Ballygunge, Kolkata', '678905432167', '2022-07-05'),
+('Anil Desai', '3210123456', 'anil.desai@example.com', '89, Navrangpura, Ahmedabad', '789016543278', '2022-09-12'),
+('Sunita Rao', '2101234567', 'sunita.rao@example.com', '23, Anna Nagar, Chennai', '890127654389', '2022-11-19'),
+('Deepak Mishra', '1012345678', 'deepak.mishra@example.com', '45, Alambagh, Lucknow', '901238765490', '2023-01-26'),
+('Shweta Saxena', '0123456789', 'shweta.saxena@example.com', '67, C Scheme, Jaipur', '012349876501', '2023-03-05');
 
-public:
-    // Constructor to initialize responses and random seed
-    Chatbot() {
-        initializeResponses();
-        srand(static_cast<unsigned int>(time(0)));
-    }
+CREATE TABLE PG_Properties (
+    property_id INT PRIMARY KEY AUTO_INCREMENT,
+    owner_id INT NOT NULL,
+    property_name VARCHAR(100) NOT NULL,
+    address TEXT NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    pincode VARCHAR(10) NOT NULL,
+    total_rooms INT NOT NULL,
+    available_rooms INT NOT NULL,
+    monthly_rent DECIMAL(10,2) NOT NULL,
+    facilities TEXT,
+    FOREIGN KEY (owner_id) REFERENCES PG_Owners(owner_id)
+);
 
-    // Function to initialize response map
-    void initializeResponses() {
-        // Greetings
-        responses["hello"] = {"Hello!", "Hi there!", "Hey!", "Howdy!", "Greetings!"};
-        responses["hi"] = responses["hello"];
-        responses["hey"] = responses["hello"];
+INSERT INTO PG_Properties (owner_id, property_name, address, city, state, pincode, total_rooms, available_rooms, monthly_rent, facilities) VALUES
+(1, 'Shanti Niketan PG', '45, Green Park, Delhi', 'Delhi', 'Delhi', '110016', 20, 5, 12000.00, 'AC, Wi-Fi, Laundry, Food'),
+(2, 'Shivaji Boys PG', '12, Shivaji Nagar, Mumbai', 'Mumbai', 'Maharashtra', '400005', 15, 2, 15000.00, 'Non-AC, Wi-Fi, Food'),
+(3, 'MG Road Ladies PG', '78, MG Road, Bangalore', 'Bangalore', 'Karnataka', '560001', 25, 8, 10000.00, 'AC, Wi-Fi, Laundry, Food, Gym'),
+(4, 'Jubilee Hills PG', '33, Jubilee Hills, Hyderabad', 'Hyderabad', 'Telangana', '500033', 18, 3, 11000.00, 'AC, Wi-Fi, Laundry'),
+(5, 'Koregaon Park PG', '9, Koregaon Park, Pune', 'Pune', 'Maharashtra', '411001', 12, 1, 13000.00, 'AC, Wi-Fi, Laundry, Food, Gym'),
+(6, 'Banjara Hills PG', '21, Banjara Hills, Hyderabad', 'Hyderabad', 'Telangana', '500034', 22, 7, 14000.00, 'AC, Wi-Fi, Laundry, Food'),
+(7, 'Salt Lake PG', '56, Salt Lake, Kolkata', 'Kolkata', 'West Bengal', '700091', 16, 4, 9000.00, 'Non-AC, Wi-Fi, Laundry'),
+(8, 'Adyar Ladies PG', '34, Adyar, Chennai', 'Chennai', 'Tamil Nadu', '600020', 20, 6, 9500.00, 'AC, Wi-Fi, Laundry, Food'),
+(9, 'Gomti Nagar PG', '67, Gomti Nagar, Lucknow', 'Lucknow', 'Uttar Pradesh', '226010', 14, 2, 8000.00, 'Non-AC, Wi-Fi'),
+(10, 'Bodakdev PG', '89, Bodakdev, Ahmedabad', 'Ahmedabad', 'Gujarat', '380054', 10, 0, 7500.00, 'Non-AC, Wi-Fi, Food'),
+(11, 'Civil Lines PG', '23, Civil Lines, Jaipur', 'Jaipur', 'Rajasthan', '302006', 18, 5, 8500.00, 'AC, Wi-Fi, Laundry'),
+(12, 'Race Course PG', '45, Race Course, Coimbatore', 'Coimbatore', 'Tamil Nadu', '641018', 12, 3, 7000.00, 'Non-AC, Wi-Fi'),
+(13, 'Ashok Nagar PG', '78, Ashok Nagar, Chandigarh', 'Chandigarh', 'Chandigarh', '160017', 15, 4, 11000.00, 'AC, Wi-Fi, Laundry, Food'),
+(14, 'HSR Layout PG', '12, HSR Layout, Bangalore', 'Bangalore', 'Karnataka', '560102', 25, 10, 12000.00, 'AC, Wi-Fi, Laundry, Food, Gym'),
+(15, 'Viman Nagar PG', '34, Viman Nagar, Pune', 'Pune', 'Maharashtra', '411014', 20, 6, 10500.00, 'AC, Wi-Fi, Laundry'),
+(16, 'Ballygunge PG', '56, Ballygunge, Kolkata', 'Kolkata', 'West Bengal', '700019', 15, 2, 9500.00, 'Non-AC, Wi-Fi, Food'),
+(17, 'Navrangpura PG', '89, Navrangpura, Ahmedabad', 'Ahmedabad', 'Gujarat', '380009', 12, 1, 8000.00, 'AC, Wi-Fi'),
+(18, 'Anna Nagar PG', '23, Anna Nagar, Chennai', 'Chennai', 'Tamil Nadu', '600040', 18, 5, 9000.00, 'AC, Wi-Fi, Laundry, Food'),
+(19, 'Alambagh PG', '45, Alambagh, Lucknow', 'Lucknow', 'Uttar Pradesh', '226005', 10, 0, 7500.00, 'Non-AC, Wi-Fi'),
+(20, 'C Scheme PG', '67, C Scheme, Jaipur', 'Jaipur', 'Rajasthan', '302001', 15, 3, 8500.00, 'AC, Wi-Fi, Laundry');
 
-        // Basic Questions
-        responses["how are you"] = {"I'm doing great, thanks!", "I'm here and ready to assist!", "Feeling ready to chat!"};
-        responses["what is your name"] = {"I'm Chatbot, your assistant!", "I go by Chatbot, here to help!"};
+CREATE TABLE Tenants (
+    tenant_id INT PRIMARY KEY AUTO_INCREMENT,
+    tenant_name VARCHAR(100) NOT NULL,
+    contact_number VARCHAR(15) NOT NULL,
+    email VARCHAR(100),
+    permanent_address TEXT,
+    aadhar_number VARCHAR(20) UNIQUE,
+    occupation VARCHAR(50),
+    company_name VARCHAR(100),
+    emergency_contact VARCHAR(15),
+    joining_date DATE
+);
 
-        // Programming Questions
-        responses["programming"] = {"Programming opens up many possibilities!", "I'm made of code myself!", "I love coding conversations!"};
-        responses["python"] = {"Python is versatile and popular!", "Python is great for data science.", "Python is known for its simplicity."};
-        responses["c++"] = {"C++ is powerful for systems programming.", "C++ is known for performance.", "I respect C++ for its efficiency."};
+INSERT INTO Tenants (tenant_name, contact_number, email, permanent_address, aadhar_number, occupation, company_name, emergency_contact, joining_date) VALUES
+('Aarav Kumar', '9876543210', 'aarav.kumar@example.com', '12, Patel Nagar, Delhi', '112233445566', 'Software Engineer', 'TCS', '9876543211', '2023-01-10'),
+('Ishaan Patel', '8765432109', 'ishaan.patel@example.com', '34, Andheri East, Mumbai', '223344556677', 'Marketing Executive', 'HDFC Bank', '8765432110', '2023-01-15'),
+('Aditi Sharma', '7654321098', 'aditi.sharma@example.com', '56, Koramangala, Bangalore', '334455667788', 'Graphic Designer', 'Infosys', '7654321099', '2023-02-05'),
+('Vihaan Reddy', '6543210987', 'vihaan.reddy@example.com', '78, Gachibowli, Hyderabad', '445566778899', 'Data Analyst', 'Amazon', '6543210988', '2023-02-20'),
+('Ananya Iyer', '5432109876', 'ananya.iyer@example.com', '90, Kothrud, Pune', '556677889900', 'HR Manager', 'Wipro', '5432109877', '2023-03-01'),
+('Reyansh Gupta', '4321098765', 'reyansh.gupta@example.com', '23, Kondapur, Hyderabad', '667788990011', 'Business Analyst', 'Microsoft', '4321098766', '2023-03-10'),
+('Saanvi Joshi', '3210987654', 'saanvi.joshi@example.com', '45, New Town, Kolkata', '778899001122', 'Doctor', 'Apollo Hospital', '3210987655', '2023-03-15'),
+('Advait Malhotra', '2109876543', 'advait.malhotra@example.com', '67, T Nagar, Chennai', '889900112233', 'CA', 'EY', '2109876544', '2023-04-01'),
+('Diya Kapoor', '1098765432', 'diya.kapoor@example.com', '89, Hazratganj, Lucknow', '990011223344', 'Teacher', 'DPS', '1098765433', '2023-04-10'),
+('Krish Nair', '0987654321', 'krish.nair@example.com', '12, Satellite, Ahmedabad', '001122334455', 'Engineer', 'L&T', '0987654322', '2023-04-15'),
+('Myra Verma', '9876512340', 'myra.verma@example.com', '34, Vaishali Nagar, Jaipur', '112233445500', 'Architect', 'CBRE', '9876512341', '2023-05-01'),
+('Arnav Mehta', '8765421239', 'arnav.mehta@example.com', '56, Peelamedu, Coimbatore', '223344556611', 'Software Developer', 'Accenture', '8765421240', '2023-05-10'),
+('Anika Choudhary', '7654332128', 'anika.choudhary@example.com', '78, Sector 17, Chandigarh', '334455667722', 'Fashion Designer', 'Myntra', '7654332129', '2023-05-15'),
+('Vivaan Srinivasan', '6543243217', 'vivaan.srinivasan@example.com', '90, HSR Layout, Bangalore', '445566778833', 'Data Scientist', 'Google', '6543243218', '2023-06-01'),
+('Kiara Khanna', '5432154326', 'kiara.khanna@example.com', '12, Kalyani Nagar, Pune', '556677889944', 'Journalist', 'Times of India', '5432154327', '2023-06-10'),
+('Ayaan Banerjee', '4321065435', 'ayaan.banerjee@example.com', '34, Park Street, Kolkata', '667788990055', 'Lawyer', 'Khaitan & Co', '4321065436', '2023-06-15'),
+('Pari Desai', '3210976544', 'pari.desai@example.com', '56, Prahlad Nagar, Ahmedabad', '778899001166', 'Interior Designer', 'Livspace', '3210976545', '2023-07-01'),
+('Atharva Rao', '2109887653', 'atharva.rao@example.com', '78, Velachery, Chennai', '889900112277', 'Banker', 'ICICI Bank', '2109887654', '2023-07-10'),
+('Avni Mishra', '1098798762', 'avni.mishra@example.com', '90, Gomti Nagar, Lucknow', '990011223388', 'Professor', 'Lucknow University', '1098798763', '2023-07-15'),
+('Shaurya Saxena', '0987709871', 'shaurya.saxena@example.com', '12, Malviya Nagar, Jaipur', '001122334499', 'Photographer', 'Freelancer', '0987709872', '2023-08-01');
 
-        // Fun and Small Talk
-        responses["hobbies"] = {"I enjoy learning new things!", "Helping people is my favorite thing to do!", "Chatting is my main hobby!"};
-        responses["what do you like"] = {"I like assisting you!", "I'm a fan of conversations!", "Learning is my hobby!"};
-        responses["tell me a joke"] = {"Why did the computer go to the doctor? It had a virus!", "Why do programmers prefer dark mode? Because light attracts bugs!", "I love binary jokes, they have two meanings!"};
+CREATE TABLE Rooms (
+    room_id INT PRIMARY KEY AUTO_INCREMENT,
+    property_id INT NOT NULL,
+    room_number VARCHAR(10) NOT NULL,
+    room_type VARCHAR(50) NOT NULL,
+    capacity INT NOT NULL,
+    current_occupancy INT DEFAULT 0,
+    status ENUM('Available', 'Occupied', 'Under Maintenance') DEFAULT 'Available',
+    FOREIGN KEY (property_id) REFERENCES PG_Properties(property_id)
+);
 
-        // Advice and Motivation
-        responses["advice"] = {"Stay curious and keep learning!", "Believe in yourself!", "Never stop exploring new things!"};
-        responses["motivate me"] = {"You can achieve anything with persistence!", "Keep going, you're doing great!", "Stay positive and keep pushing forward!"};
+INSERT INTO Rooms (property_id, room_number, room_type, capacity, current_occupancy, status) VALUES
+-- For property_id 1 (Shanti Niketan PG)
+(1, '101', 'Single', 1, 1, 'Occupied'),
+(1, '102', 'Single', 1, 1, 'Occupied'),
+(1, '103', 'Double', 2, 1, 'Occupied'),
+(1, '104', 'Double', 2, 2, 'Occupied'),
+(1, '105', 'Single', 1, 0, 'Available'),
+(1, '201', 'Single', 1, 1, 'Occupied'),
+(1, '202', 'Double', 2, 0, 'Available'),
+(1, '203', 'Single', 1, 0, 'Available'),
+(1, '204', 'Triple', 3, 3, 'Occupied'),
+(1, '205', 'Single', 1, 1, 'Occupied'),
+(1, '301', 'Double', 2, 1, 'Occupied'),
+(1, '302', 'Single', 1, 0, 'Available'),
+(1, '303', 'Double', 2, 2, 'Occupied'),
+(1, '304', 'Single', 1, 1, 'Occupied'),
+(1, '305', 'Single', 1, 0, 'Available'),
+(1, '401', 'Double', 2, 0, 'Under Maintenance'),
+(1, '402', 'Single', 1, 1, 'Occupied'),
+(1, '403', 'Single', 1, 0, 'Available'),
+(1, '404', 'Double', 2, 2, 'Occupied'),
+(1, '405', 'Single', 1, 1, 'Occupied'),
 
-        // Farewell
-        responses["goodbye"] = {"Goodbye! Have a great day!", "See you later!", "Take care!"};
-        responses["bye"] = responses["goodbye"];
+-- For property_id 2 (Shivaji Boys PG)
+(2, '101', 'Single', 1, 1, 'Occupied'),
+(2, '102', 'Double', 2, 2, 'Occupied'),
+(2, '103', 'Single', 1, 0, 'Available'),
+(2, '104', 'Single', 1, 1, 'Occupied'),
+(2, '105', 'Double', 2, 0, 'Available'),
+(2, '201', 'Single', 1, 1, 'Occupied'),
+(2, '202', 'Single', 1, 1, 'Occupied'),
+(2, '203', 'Double', 2, 2, 'Occupied'),
+(2, '204', 'Single', 1, 0, 'Available'),
+(2, '205', 'Single', 1, 1, 'Occupied'),
+(2, '301', 'Double', 2, 1, 'Occupied'),
+(2, '302', 'Single', 1, 1, 'Occupied'),
+(2, '303', 'Single', 1, 0, 'Under Maintenance'),
+(2, '304', 'Double', 2, 2, 'Occupied'),
+(2, '305', 'Single', 1, 1, 'Occupied'),
 
-        // Fallback for unknown responses
-        responses["fallback"] = {"I'm not sure about that.", "Could you rephrase?", "I don't understand that, but I'm learning!"};
-    }
+-- For property_id 3 (MG Road Ladies PG)
+(3, '101', 'Single', 1, 1, 'Occupied'),
+(3, '102', 'Single', 1, 0, 'Available'),
+(3, '103', 'Double', 2, 2, 'Occupied'),
+(3, '104', 'Single', 1, 1, 'Occupied'),
+(3, '105', 'Double', 2, 0, 'Available'),
+(3, '201', 'Single', 1, 1, 'Occupied'),
+(3, '202', 'Single', 1, 0, 'Available'),
+(3, '203', 'Double', 2, 1, 'Occupied'),
+(3, '204', 'Single', 1, 1, 'Occupied'),
+(3, '205', 'Single', 1, 0, 'Available'),
+(3, '301', 'Double', 2, 2, 'Occupied'),
+(3, '302', 'Single', 1, 1, 'Occupied'),
+(3, '303', 'Single', 1, 0, 'Available'),
+(3, '304', 'Double', 2, 0, 'Available'),
+(3, '305', 'Single', 1, 1, 'Occupied'),
+(3, '401', 'Single', 1, 0, 'Available'),
+(3, '402', 'Double', 2, 2, 'Occupied'),
+(3, '403', 'Single', 1, 1, 'Occupied'),
+(3, '404', 'Single', 1, 0, 'Available'),
+(3, '405', 'Double', 2, 1, 'Occupied');
 
-    // Function to convert input to lowercase
-    string toLowerCase(const string &input) {
-        string lowerInput;
-        for (char c : input) {
-            lowerInput += tolower(c);
-        }
-        return lowerInput;
-    }
+CREATE TABLE Bookings (
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
+    tenant_id INT NOT NULL,
+    room_id INT NOT NULL,
+    booking_date DATE NOT NULL,
+    move_in_date DATE NOT NULL,
+    move_out_date DATE,
+    monthly_rent DECIMAL(10,2) NOT NULL,
+    security_deposit DECIMAL(10,2) NOT NULL,
+    booking_status ENUM('Confirmed', 'Cancelled', 'Completed') DEFAULT 'Confirmed',
+    FOREIGN KEY (tenant_id) REFERENCES Tenants(tenant_id),
+    FOREIGN KEY (room_id) REFERENCES Rooms(room_id)
+);
 
-    // Function to get a random response
-    string getRandomResponse(const vector<string> &responses) {
-        return responses[rand() % responses.size()];
-    }
+INSERT INTO Bookings (tenant_id, room_id, booking_date, move_in_date, move_out_date, monthly_rent, security_deposit, booking_status) VALUES
+(1, 1, '2023-01-05', '2023-01-10', NULL, 12000.00, 20000.00, 'Confirmed'),
+(2, 2, '2023-01-10', '2023-01-15', NULL, 12000.00, 20000.00, 'Confirmed'),
+(3, 4, '2023-01-28', '2023-02-05', NULL, 12000.00, 20000.00, 'Confirmed'),
+(4, 7, '2023-02-15', '2023-02-20', NULL, 15000.00, 25000.00, 'Confirmed'),
+(5, 10, '2023-02-25', '2023-03-01', NULL, 10000.00, 15000.00, 'Confirmed'),
+(6, 13, '2023-03-05', '2023-03-10', NULL, 11000.00, 18000.00, 'Confirmed'),
+(7, 16, '2023-03-10', '2023-03-15', NULL, 13000.00, 22000.00, 'Confirmed'),
+(8, 19, '2023-03-28', '2023-04-01', NULL, 14000.00, 24000.00, 'Confirmed'),
+(9, 22, '2023-04-05', '2023-04-10', NULL, 9000.00, 15000.00, 'Confirmed'),
+(10, 25, '2023-04-10', '2023-04-15', NULL, 9500.00, 16000.00, 'Confirmed'),
+(11, 28, '2023-04-28', '2023-05-01', NULL, 8000.00, 13000.00, 'Confirmed'),
+(12, 31, '2023-05-05', '2023-05-10', NULL, 7500.00, 12000.00, 'Confirmed'),
+(13, 34, '2023-05-10', '2023-05-15', NULL, 8500.00, 14000.00, 'Confirmed'),
+(14, 37, '2023-05-28', '2023-06-01', NULL, 7000.00, 11000.00, 'Confirmed'),
+(15, 40, '2023-06-05', '2023-06-10', NULL, 11000.00, 18000.00, 'Confirmed'),
+(16, 43, '2023-06-10', '2023-06-15', NULL, 12000.00, 20000.00, 'Confirmed'),
+(17, 46, '2023-06-28', '2023-07-01', NULL, 10500.00, 17000.00, 'Confirmed'),
+(18, 49, '2023-07-05', '2023-07-10', NULL, 9500.00, 15000.00, 'Confirmed'),
+(19, 52, '2023-07-10', '2023-07-15', NULL, 8000.00, 13000.00, 'Confirmed'),
+(20, 55, '2023-07-28', '2023-08-01', NULL, 9000.00, 15000.00, 'Confirmed');
 
-    // Function to handle basic sentiment analysis
-    string handleSentiment(const string &input) {
-        if (input.find("sad") != string::npos || input.find("not well") != string::npos) {
-            return "I'm sorry to hear that. If there's anything I can do to help, just ask!";
-        } else if (input.find("happy") != string::npos || input.find("great") != string::npos) {
-            return "That's wonderful! I'm glad you're feeling good.";
-        }
-        return "";  // Return empty if no sentiment detected
-    }
+CREATE TABLE Payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    booking_id INT NOT NULL,
+    payment_date DATE NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_mode ENUM('Cash', 'UPI', 'Bank Transfer', 'Cheque') NOT NULL,
+    payment_for_month VARCHAR(20) NOT NULL,
+    transaction_id VARCHAR(50),
+    status ENUM('Paid', 'Pending', 'Failed') DEFAULT 'Paid',
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
+);
 
-    // Function to handle remembering user's name
-    void handleUserName(const string &input) {
-        size_t pos = input.find("my name is ");
-        if (pos != string::npos) {
-            userName = input.substr(pos + 11);  // Extract name after "my name is "
-            cout << "Chatbot: Nice to meet you, " << userName << "!" << endl;
-        }
-    }
+INSERT INTO Payments (booking_id, payment_date, amount, payment_mode, payment_for_month, transaction_id, status) VALUES
+(1, '2023-01-10', 12000.00, 'UPI', 'January 2023', 'UPI123456789', 'Paid'),
+(1, '2023-02-05', 12000.00, 'Bank Transfer', 'February 2023', 'BANK987654321', 'Paid'),
+(1, '2023-03-05', 12000.00, 'UPI', 'March 2023', 'UPI234567890', 'Paid'),
+(2, '2023-01-15', 12000.00, 'Cash', 'January 2023', 'CASH123456', 'Paid'),
+(2, '2023-02-10', 12000.00, 'UPI', 'February 2023', 'UPI345678901', 'Paid'),
+(3, '2023-02-05', 12000.00, 'Bank Transfer', 'February 2023', 'BANK876543210', 'Paid'),
+(4, '2023-02-20', 15000.00, 'UPI', 'February 2023', 'UPI456789012', 'Paid'),
+(5, '2023-03-01', 10000.00, 'Cash', 'March 2023', 'CASH234567', 'Paid'),
+(6, '2023-03-10', 11000.00, 'Bank Transfer', 'March 2023', 'BANK765432109', 'Paid'),
+(7, '2023-03-15', 13000.00, 'UPI', 'March 2023', 'UPI567890123', 'Paid'),
+(8, '2023-04-01', 14000.00, 'Cash', 'April 2023', 'CASH345678', 'Paid'),
+(9, '2023-04-10', 9000.00, 'Bank Transfer', 'April 2023', 'BANK654321098', 'Paid'),
+(10, '2023-04-15', 9500.00, 'UPI', 'April 2023', 'UPI678901234', 'Paid'),
+(11, '2023-05-01', 8000.00, 'Cash', 'May 2023', 'CASH456789', 'Paid'),
+(12, '2023-05-10', 7500.00, 'Bank Transfer', 'May 2023', 'BANK543210987', 'Paid'),
+(13, '2023-05-15', 8500.00, 'UPI', 'May 2023', 'UPI789012345', 'Paid'),
+(14, '2023-06-01', 7000.00, 'Cash', 'June 2023', 'CASH567890', 'Paid'),
+(15, '2023-06-10', 11000.00, 'Bank Transfer', 'June 2023', 'BANK432109876', 'Paid'),
+(16, '2023-06-15', 12000.00, 'UPI', 'June 2023', 'UPI890123456', 'Paid'),
+(17, '2023-07-01', 10500.00, 'Cash', 'July 2023', 'CASH678901', 'Paid');
 
-    // Function to find response for input
-    string getResponse(const string &userInput) {
-        string lowerInput = toLowerCase(userInput);
+CREATE TABLE Maintenance (
+    maintenance_id INT PRIMARY KEY AUTO_INCREMENT,
+    property_id INT NOT NULL,
+    maintenance_type VARCHAR(100) NOT NULL,
+    description TEXT,
+    cost DECIMAL(10,2) NOT NULL,
+    maintenance_date DATE NOT NULL,
+    completed_date DATE,
+    status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    FOREIGN KEY (property_id) REFERENCES PG_Properties(property_id)
+);
 
-        // Name detection
-        if (lowerInput.find("my name is") != string::npos) {
-            handleUserName(lowerInput);
-            return "";  // Early return since response is handled
-        }
+INSERT INTO Maintenance (property_id, maintenance_type, description, cost, maintenance_date, completed_date, status) VALUES
+(1, 'Plumbing', 'Fix leaking pipes in room 401', 2500.00, '2023-01-05', '2023-01-07', 'Completed'),
+(1, 'Electrical', 'Repair faulty wiring in common area', 3500.00, '2023-02-10', '2023-02-12', 'Completed'),
+(2, 'Painting', 'Paint all common area walls', 12000.00, '2023-01-15', '2023-01-20', 'Completed'),
+(3, 'Furniture', 'Replace broken beds in room 303', 8000.00, '2023-02-05', '2023-02-07', 'Completed'),
+(4, 'AC Repair', 'Service all AC units', 15000.00, '2023-03-01', '2023-03-05', 'Completed'),
+(5, 'Plumbing', 'Fix bathroom drainage issue', 3000.00, '2023-02-15', '2023-02-17', 'Completed'),
+(6, 'Electrical', 'Install new lights in corridor', 5000.00, '2023-03-10', '2023-03-12', 'Completed'),
+(7, 'Painting', 'Touch up paint in rooms', 6000.00, '2023-01-20', '2023-01-25', 'Completed'),
+(8, 'Furniture', 'Add new study tables', 10000.00, '2023-02-28', '2023-03-02', 'Completed'),
+(9, 'AC Repair', 'Fix non-working AC in room 202', 4500.00, '2023-03-15', '2023-03-17', 'Completed'),
+(10, 'Plumbing', 'Replace old pipes', 8000.00, '2023-01-10', '2023-01-15', 'Completed'),
+(11, 'Electrical', 'Upgrade electrical panel', 12000.00, '2023-02-05', '2023-02-10', 'Completed'),
+(12, 'Painting', 'Paint exterior walls', 15000.00, '2023-03-01', '2023-03-10', 'Completed'),
+(13, 'Furniture', 'Replace old mattresses', 20000.00, '2023-01-15', '2023-01-20', 'Completed'),
+(14, 'AC Repair', 'Service all AC units', 18000.00, '2023-02-20', '2023-02-25', 'Completed'),
+(15, 'Plumbing', 'Fix water pressure issue', 3500.00, '2023-03-05', '2023-03-07', 'Completed'),
+(16, 'Electrical', 'Install new switches', 4000.00, '2023-01-25', '2023-01-27', 'Completed'),
+(17, 'Painting', 'Paint lobby area', 7000.00, '2023-02-15', '2023-02-20', 'Completed'),
+(18, 'Furniture', 'Add new chairs to common area', 5000.00, '2023-03-10', '2023-03-12', 'Completed'),
+(19, 'AC Repair', 'Fix AC in room 105', 3000.00, '2023-01-30', '2023-02-01', 'Completed');
 
-        // Sentiment analysis
-        string sentimentResponse = handleSentiment(lowerInput);
-        if (!sentimentResponse.empty()) {
-            return sentimentResponse;
-        }
+CREATE TABLE Staff (
+    staff_id INT PRIMARY KEY AUTO_INCREMENT,
+    property_id INT NOT NULL,
+    staff_name VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    contact_number VARCHAR(15) NOT NULL,
+    salary DECIMAL(10,2) NOT NULL,
+    join_date DATE NOT NULL,
+    aadhar_number VARCHAR(20) UNIQUE,
+    FOREIGN KEY (property_id) REFERENCES PG_Properties(property_id)
+);
 
-        // Check for keyword matches
-        for (const auto &pair : responses) {
-            if (lowerInput.find(pair.first) != string::npos) {
-                return getRandomResponse(pair.second);
-            }
-        }
-        // Fallback if no match found
-        return getRandomResponse(responses["fallback"]);
-    }
+INSERT INTO Staff (property_id, staff_name, role, contact_number, salary, join_date, aadhar_number) VALUES
+(1, 'Ramesh Kumar', 'Manager', '9876543201', 25000.00, '2020-01-20', '112233440001'),
+(1, 'Suresh Patel', 'Cook', '8765432102', 18000.00, '2020-02-15', '223344550002'),
+(1, 'Geeta Sharma', 'Housekeeping', '7654321093', 15000.00, '2020-03-10', '334455660003'),
+(2, 'Mahesh Reddy', 'Manager', '6543210984', 26000.00, '2020-03-25', '445566770004'),
+(2, 'Lata Iyer', 'Cook', '5432109875', 19000.00, '2020-04-15', '556677880005'),
+(3, 'Vijay Gupta', 'Manager', '4321098766', 27000.00, '2020-05-01', '667788990006'),
+(3, 'Sunita Joshi', 'Cook', '3210987657', 20000.00, '2020-05-20', '778899000007'),
+(3, 'Anil Malhotra', 'Security', '2109876548', 16000.00, '2020-06-10', '889900110008'),
+(4, 'Priya Kapoor', 'Manager', '1098765439', 28000.00, '2020-06-25', '990011220009'),
+(4, 'Rahul Nair', 'Cook', '0987654320', 21000.00, '2020-07-15', '001122330010'),
+(5, 'Neha Verma', 'Manager', '9876543211', 29000.00, '2020-08-01', '112233440011'),
+(5, 'Arun Mehta', 'Housekeeping', '8765432103', 17000.00, '2020-08-20', '223344550012'),
+(6, 'Pooja Choudhary', 'Manager', '7654321094', 30000.00, '2020-09-05', '334455660013'),
+(6, 'Raj Srinivasan', 'Security', '6543210985', 18000.00, '2020-09-25', '445566770014'),
+(7, 'Anjali Khanna', 'Manager', '5432109876', 31000.00, '2020-10-10', '556677880015'),
+(7, 'Sanjay Banerjee', 'Cook', '4321098767', 22000.00, '2020-10-30', '667788990016'),
+(8, 'Kavita Desai', 'Manager', '3210987658', 32000.00, '2020-11-15', '778899000017'),
+(8, 'Vikram Rao', 'Housekeeping', '2109876549', 19000.00, '2020-12-01', '889900110018'),
+(9, 'Sunil Mishra', 'Manager', '1098765430', 33000.00, '2020-12-20', '990011220019'),
+(10, 'Meena Saxena', 'Manager', '0987654321', 34000.00, '2021-01-05', '001122330020');
 
-    // Function to start the conversation
-    void start() {
-        cout << "Chatbot: " << getRandomResponse(responses["hello"]) << " Type 'exit' to end the conversation." << endl;
+CREATE TABLE Complaints (
+    complaint_id INT PRIMARY KEY AUTO_INCREMENT,
+    tenant_id INT NOT NULL,
+    property_id INT NOT NULL,
+    complaint_date DATETIME NOT NULL,
+    complaint_type VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    status ENUM('Open', 'In Progress', 'Resolved', 'Closed') DEFAULT 'Open',
+    resolution_date DATETIME,
+    resolution_details TEXT,
+    FOREIGN KEY (tenant_id) REFERENCES Tenants(tenant_id),
+    FOREIGN KEY (property_id) REFERENCES PG_Properties(property_id)
+);
 
-        string userInput;
-        while (true) {
-            cout << "You: ";
-            getline(cin, userInput);
+INSERT INTO Complaints (tenant_id, property_id, complaint_date, complaint_type, description, status, resolution_date, resolution_details) VALUES
+(1, 1, '2023-01-15 10:30:00', 'Plumbing', 'Water leakage in bathroom', 'Resolved', '2023-01-15 16:45:00', 'Fixed leaking pipe'),
+(2, 1, '2023-01-20 09:15:00', 'Electrical', 'Power socket not working', 'Resolved', '2023-01-20 12:30:00', 'Replaced faulty socket'),
+(3, 1, '2023-02-10 14:00:00', 'Cleanliness', 'Room not cleaned properly', 'Resolved', '2023-02-10 15:30:00', 'Room cleaned again'),
+(4, 2, '2023-02-25 11:20:00', 'Noise', 'Loud noise from adjacent room', 'Resolved', '2023-02-25 12:45:00', 'Spoken to other tenants'),
+(5, 3, '2023-03-05 08:45:00', 'AC Issue', 'AC not cooling properly', 'Resolved', '2023-03-05 14:00:00', 'AC serviced and fixed'),
+(6, 4, '2023-03-15 19:30:00', 'WiFi', 'Internet not working', 'Resolved', '2023-03-16 10:00:00', 'Router reset'),
+(7, 5, '2023-03-20 07:00:00', 'Food', 'Quality of food not good', 'Resolved', '2023-03-20 12:00:00', 'Spoken to cook, menu improved'),
+(8, 6, '2023-04-05 21:15:00', 'Security', 'Main gate not locked at night', 'Resolved', '2023-04-06 09:00:00', 'Security guard instructed'),
+(9, 7, '2023-04-15 16:45:00', 'Furniture', 'Bed is broken', 'Resolved', '2023-04-16 14:00:00', 'Bed replaced'),
+(10, 8, '2023-04-20 13:30:00', 'Water', 'No hot water in morning', 'Resolved', '2023-04-21 10:00:00', 'Geyser repaired'),
+(11, 9, '2023-05-05 08:00:00', 'Cleanliness', 'Common area not cleaned', 'Resolved', '2023-05-05 12:00:00', 'Area cleaned'),
+(12, 10, '2023-05-15 17:30:00', 'Noise', 'Construction noise early morning', 'Open', NULL, NULL),
+(13, 11, '2023-05-20 10:15:00', 'Electrical', 'Lights flickering', 'In Progress', NULL, NULL),
+(14, 12, '2023-06-05 09:45:00', 'Plumbing', 'Toilet flush not working', 'Resolved', '2023-06-05 15:00:00', 'Flush mechanism replaced'),
+(15, 13, '2023-06-15 20:00:00', 'Security', 'Unknown person in premises', 'Resolved', '2023-06-15 21:30:00', 'Person escorted out'),
+(16, 14, '2023-06-20 11:30:00', 'Food', 'Late dinner service', 'Resolved', '2023-06-20 13:00:00', 'Schedule adjusted'),
+(17, 15, '2023-07-05 07:15:00', 'AC Issue', 'AC leaking water', 'Open', NULL, NULL),
+(18, 16, '2023-07-15 14:45:00', 'WiFi', 'Slow internet speed', 'In Progress', NULL, NULL),
+(19, 17, '2023-07-20 18:30:00', 'Water', 'Low water pressure', 'Resolved', '2023-07-21 11:00:00', 'Pump issue fixed'),
+(20, 18, '2023-08-05 09:00:00', 'Furniture', 'Chair broken', 'Open', NULL, NULL);
 
-            // Exit condition
-            if (toLowerCase(userInput) == "exit") {
-                cout << "Chatbot: Goodbye! Take care!" << endl;
-                break;
-            }
+CREATE TABLE Visitor_Logs (
+    visitor_id INT PRIMARY KEY AUTO_INCREMENT,
+    tenant_id INT NOT NULL,
+    visitor_name VARCHAR(100) NOT NULL,
+    visitor_contact VARCHAR(15),
+    relation_with_tenant VARCHAR(50),
+    visit_purpose VARCHAR(100),
+    entry_time DATETIME NOT NULL,
+    exit_time DATETIME,
+    FOREIGN KEY (tenant_id) REFERENCES Tenants(tenant_id)
+);
 
-            // Generate response
-            string response = getResponse(userInput);
-            if (!response.empty()) {  // Avoid empty responses
-                cout << "Chatbot: " << response << endl;
-            }
-        }
-    }
-};
+INSERT INTO Visitor_Logs (tenant_id, visitor_name, visitor_contact, relation_with_tenant, visit_purpose, entry_time, exit_time) VALUES
+(1, 'Rahul Kumar', '9876501234', 'Brother', 'Personal Visit', '2023-01-20 14:00:00', '2023-01-20 18:30:00'),
+(1, 'Priya Sharma', '8765412345', 'Friend', 'Dinner', '2023-02-05 19:00:00', '2023-02-05 22:00:00'),
+(2, 'Vikram Patel', '7654323456', 'Father', 'Dropping things', '2023-01-25 10:00:00', '2023-01-25 11:30:00'),
+(3, 'Anjali Reddy', '6543234567', 'Sister', 'Weekend stay', '2023-02-10 16:00:00', '2023-02-12 11:00:00'),
+(4, 'Sanjay Iyer', '5432145678', 'Friend', 'Study together', '2023-02-25 15:00:00', '2023-02-25 20:00:00'),
+(5, 'Meena Gupta', '4321056789', 'Mother', 'Personal Visit', '2023-03-05 11:00:00', '2023-03-05 17:00:00'),
+(6, 'Arun Joshi', '3210967890', 'Cousin', 'Dinner', '2023-03-15 18:30:00', '2023-03-15 22:00:00'),
+(7, 'Sunita Malhotra', '2109878901', 'Aunt', 'Personal Visit', '2023-03-20 12:00:00', '2023-03-20 15:30:00'),
+(8, 'Ramesh Kapoor', '1098789012', 'Uncle', 'Dropping things', '2023-04-05 09:30:00', '2023-04-05 10:45:00'),
+(9, 'Suresh Nair', '0987890123', 'Friend', 'Weekend stay', '2023-04-15 17:00:00', '2023-04-16 12:00:00'),
+(10, 'Lata Verma', '9878901234', 'Sister', 'Personal Visit', '2023-04-20 14:30:00', '2023-04-20 19:00:00'),
+(11, 'Mahesh Mehta', '8769012345', 'Brother', 'Dinner', '2023-05-05 18:00:00', '2023-05-05 21:30:00'),
+(12, 'Geeta Choudhary', '7650123456', 'Friend', 'Study together', '2023-05-15 16:00:00', '2023-05-15 20:00:00'),
+(13, 'Vijay Srinivasan', '6541234567', 'Father', 'Dropping things', '2023-05-20 10:30:00', '2023-05-20 12:00:00'),
+(14, 'Sunita Khanna', '5432345678', 'Mother', 'Personal Visit', '2023-06-05 11:30:00', '2023-06-05 16:00:00'),
+(15, 'Anil Banerjee', '4323456789', 'Friend', 'Dinner', '2023-06-15 19:00:00', '2023-06-15 23:00:00'),
+(16, 'Priya Desai', '3214567890', 'Cousin', 'Weekend stay', '2023-06-20 15:00:00', '2023-06-22 11:00:00'),
+(17, 'Rahul Rao', '2105678901', 'Uncle', 'Personal Visit', '2023-07-05 13:00:00', '2023-07-05 17:30:00'),
+(18, 'Neha Mishra', '1096789012', 'Aunt', 'Dropping things', '2023-07-15 09:00:00', '2023-07-15 10:15:00'),
+(19, 'Arjun Saxena', '0987890123', 'Friend', 'Study together', '2023-07-20 14:00:00', '2023-07-20 18:00:00');
 
-// Main function
-int main() {
-    Chatbot chatbot;
-    chatbot.start();
-    return 0;
-}
+-- first query
+SELECT p.property_name, r.room_number, r.room_type, p.monthly_rent, p.facilities 
+FROM Rooms r
+JOIN PG_Properties p ON r.property_id = p.property_id
+WHERE r.status = 'Available';
+
+-- second query
+SELECT t.tenant_name, t.contact_number, p.property_name, r.room_number
+FROM Tenants t
+JOIN Bookings b ON t.tenant_id = b.tenant_id
+JOIN Rooms r ON b.room_id = r.room_id
+JOIN PG_Properties p ON r.property_id = p.property_id
+WHERE b.booking_status = 'Confirmed' AND b.move_out_date IS NULL;
+
+-- third query
+SELECT o.owner_name, o.contact_number, COUNT(p.property_id) AS property_count
+FROM PG_Owners o
+LEFT JOIN PG_Properties p ON o.owner_id = p.owner_id
+GROUP BY o.owner_id
+ORDER BY property_count DESC;
+
+-- fourth query
+SELECT t.tenant_name, p.property_name, c.complaint_type, 
+c.complaint_date, DATEDIFF(NOW(), c.complaint_date) AS days_pending
+FROM Complaints c
+JOIN Tenants t ON c.tenant_id = t.tenant_id
+JOIN PG_Properties p ON c.property_id = p.property_id
+WHERE c.status != 'Resolved'
+ORDER BY days_pending DESC;
+
+-- Fifth Query 
+SELECT p.property_name, SUM(py.amount) AS total_revenue,
+COUNT(DISTINCT b.booking_id) AS booking_count
+FROM Payments py
+JOIN Bookings b ON py.booking_id = b.booking_id
+JOIN Rooms r ON b.room_id = r.room_id
+JOIN PG_Properties p ON r.property_id = p.property_id
+GROUP BY p.property_id
+ORDER BY total_revenue DESC;
+
+-- Sixth Query 
+SELECT t.tenant_name, p.property_name, r.room_number,
+       b.monthly_rent, MAX(py.payment_date) AS last_payment_date
+FROM Tenants t
+JOIN Bookings b ON t.tenant_id = b.tenant_id
+JOIN Rooms r ON b.room_id = r.room_id
+JOIN PG_Properties p ON r.property_id = p.property_id
+LEFT JOIN Payments py ON b.booking_id = py.booking_id
+WHERE b.booking_status = 'Confirmed' AND b.move_out_date IS NULL
+GROUP BY b.booking_id
+HAVING last_payment_date IS NULL 
+OR last_payment_date < DATE_SUB(NOW(), INTERVAL 1 MONTH)
+ORDER BY last_payment_date;
+
+-- Seventh Query 
+SELECT DATE_FORMAT(py.payment_date, '%Y-%m') AS month,
+SUM(py.amount) AS monthly_income,
+COUNT(DISTINCT b.booking_id) AS active_bookings
+FROM Payments py
+JOIN Bookings b ON py.booking_id = b.booking_id
+JOIN Rooms r ON b.room_id = r.room_id
+WHERE r.property_id = 1  -- Change property_id as needed
+GROUP BY DATE_FORMAT(py.payment_date, '%Y-%m')
+ORDER BY month;
+
+-- Eight Query 
+SELECT p.property_name,
+    COUNT(r.room_id) AS total_rooms,
+    SUM(CASE WHEN r.status = 'Occupied' THEN 1 ELSE 0 END) AS occupied_rooms,
+    CONCAT(ROUND((SUM(CASE WHEN r.status = 'Occupied' THEN 1 ELSE 0 END) * 100.0 / 
+           COUNT(r.room_id)), 0), '%') AS occupancy_rate
+FROM PG_Properties p
+JOIN Rooms r ON p.property_id = r.property_id
+GROUP BY p.property_id
+ORDER BY occupancy_rate DESC;
+
+-- Ninth Query 
+SELECT complaint_type, 
+       COUNT(*) AS complaint_count,
+       CASE 
+           WHEN (SELECT COUNT(*) FROM Complaints) = 0 THEN '0%'
+           ELSE CONCAT(ROUND(COUNT() * 100.0 / (SELECT COUNT() FROM Complaints), 0), '%')
+       END AS percentage
+FROM Complaints
+GROUP BY complaint_type
+ORDER BY complaint_count DESC;
+
+-- tenth Query 
+SELECT t.tenant_name, p.property_name, r.room_number,
+       b.move_in_date, DATEDIFF(NOW(), b.move_in_date) AS days_staying,
+       ROUND(DATEDIFF(NOW(), b.move_in_date)/30, 1) AS months_staying,
+       SUM(py.amount) AS total_paid
+FROM Tenants t
+JOIN Bookings b ON t.tenant_id = b.tenant_id
+JOIN Rooms r ON b.room_id = r.room_id
+JOIN PG_Properties p ON r.property_id = p.property_id
+LEFT JOIN Payments py ON b.booking_id = py.booking_id
+WHERE b.booking_status = 'Confirmed' AND b.move_out_date IS NULL
+GROUP BY b.booking_id
+HAVING months_staying > 6
+ORDER BY days_staying DESC;
